@@ -971,22 +971,17 @@ void TiledDeferredShadingCS( uint3 GroupID : SV_GroupID,
 		
 			if (celBands > 0)
 			{
-				float bands = max(celBands, 1.0);
-
-				if (bands == 1.0)
-				{
-					NdotL = 1.0;
-				}
-				else if (NdotL < 0.1)
+				float bands = max(celBands, 2.0);
+			
+				if (NdotL < 0.1)
 				{
 					NdotL = 0.0;
 				}
 				else
 				{
-					float upperBands = bands - 1.0;
-					float bandIndex = floor((NdotL - 0.1) / 0.9 * upperBands);
-
-					NdotL = 0.1 + (bandIndex / upperBands) * 0.9;
+					float t = (NdotL - 0.1) / 0.9;
+					NdotL = round(t * (bands - 1.0)) / (bands - 1.0);
+					NdotL = max(NdotL, 1.0 / (bands - 1.0));
 				}
 			}
 			

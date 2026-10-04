@@ -543,7 +543,7 @@ pixout_gbuffer Common_ZPassPS(vert2fragZ IN)
 		{
 			// Preserve the standard lighting model (0), but store CelBands
 			// in the fractional portion of GBufferA.w.
-			OUT.GBufferA.w = (((CelBands - 0.05) / 8.0) * MAX_FRACTIONAL_8_BIT) / TWO_BITS_EXTRACTION_FACTOR;
+			OUT.GBufferA.w = ((clamp(CelBands, 2, 7.99) / 8.0) * MAX_FRACTIONAL_8_BIT) / TWO_BITS_EXTRACTION_FACTOR;
 		}
 	#endif
 #endif
